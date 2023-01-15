@@ -1,14 +1,14 @@
-import express, { Express, Request, Response } from "express";
-import { Server, Socket } from "socket.io";
+import express, { } from "express";
+import { Server } from "socket.io";
 import { createServer } from "http";
-const { v4: uuidV4 } = require("uuid");
+import path from 'path';
 
+const { v4: uuidV4 } = require("uuid");
 const app = express();
 const httpServer = createServer(app);
 const io = new Server(httpServer, { /* options */ });
-import path from 'path';
-import { resolveTypeReferenceDirective } from "typescript";
 const cors = require('cors');
+
 app.use(cors({
     origin: 'http://localhost:4200'
 }));
@@ -27,8 +27,8 @@ app.get('/createroom', (_, res) => {
 app.get('/room/:id', (req, res) => {
     res.json({ roomId: req.params.id });
 });
+
 io.on("connection", (socket) => {
-    console.log("User Connected...");
     socket.on("join-room", (roomid) => {
         console.log("user join room  " + roomid);
         socket.join(roomid);
